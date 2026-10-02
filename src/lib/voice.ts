@@ -69,7 +69,7 @@ function parseNumber(raw: string, decimal: boolean): number | null {
   let found = false;
   for (const tk of tokens) {
     if (tk in WORDS) {
-      current += WORDS[tk];
+    n = decimal ? parseFloat(m[0]) : parseInt(m[0], 10);
       found = true;
     } else if (tk === "hundred") {
       current = (current || 1) * 100;
