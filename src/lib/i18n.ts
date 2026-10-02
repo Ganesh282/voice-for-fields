@@ -8,16 +8,7 @@ export const LANGS: { code: Lang; label: string }[] = [
 
 type Opt = Record<Lang, string>;
 
-export const STATES = [
-  "Andhra Pradesh",
-  "Telangana",
-  "Tamil Nadu",
-  "Karnataka",
-  "Kerala",
-  "Maharashtra",
-  "Odisha",
-  "Other",
-];
+export const STATES = ["Andhra Pradesh", "Telangana", "Tamil Nadu"];
 
 export const FARMER_TYPES: { value: string; label: Opt }[] = [
   { value: "marginal", label: { en: "Marginal farmer", te: "సన్నకారు రైతు", ta: "குறு விவசாயி" } },
@@ -192,7 +183,7 @@ export const V: Record<
     ask: {
       name: "Please tell me your name.",
       age: "How old are you?",
-      state: "Which state are you from? Andhra Pradesh, Telangana, Tamil Nadu, Karnataka, Kerala, Maharashtra or Odisha.",
+      state: "Which state are you from? Andhra Pradesh, Telangana or Tamil Nadu.",
       district: "Tell me your district name.",
       preferred_language: "Which language do you prefer? Telugu, English or Tamil.",
       land_size: "How many acres of land do you have?",
@@ -216,7 +207,7 @@ export const V: Record<
     ask: {
       name: "దయచేసి మీ పేరు చెప్పండి.",
       age: "మీ వయస్సు ఎంత?",
-      state: "మీది ఏ రాష్ట్రం? ఆంధ్రప్రదేశ్, తెలంగాణ, తమిళనాడు, కర్ణాటక, కేరళ, మహారాష్ట్ర లేదా ఒడిశా.",
+      state: "మీది ఏ రాష్ట్రం? ఆంధ్రప్రదేశ్, తెలంగాణ లేదా తమిళనాడు.",
       district: "మీ జిల్లా పేరు చెప్పండి.",
       preferred_language: "మీకు ఇష్టమైన భాష ఏది? తెలుగు, ఇంగ్లీష్ లేదా తమిళం.",
       land_size: "మీకు ఎన్ని ఎకరాల భూమి ఉంది?",
@@ -240,7 +231,7 @@ export const V: Record<
     ask: {
       name: "உங்கள் பெயரைச் சொல்லுங்கள்.",
       age: "உங்கள் வயது என்ன?",
-      state: "உங்கள் மாநிலம் எது? ஆந்திரப் பிரதேசம், தெலங்கானா, தமிழ்நாடு, கர்நாடகா, கேரளா, மகாராஷ்டிரா அல்லது ஒடிசா.",
+      state: "உங்கள் மாநிலம் எது? ஆந்திரப் பிரதேசம், தெலங்கானா அல்லது தமிழ்நாடு.",
       district: "உங்கள் மாவட்டத்தின் பெயரைச் சொல்லுங்கள்.",
       preferred_language: "உங்களுக்கு விருப்பமான மொழி எது? தெலுங்கு, ஆங்கிலம் அல்லது தமிழ்.",
       land_size: "உங்களிடம் எத்தனை ஏக்கர் நிலம் உள்ளது?",

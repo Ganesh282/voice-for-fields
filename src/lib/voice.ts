@@ -101,11 +101,6 @@ const STATE_ALIASES: Record<string, string[]> = {
   "Andhra Pradesh": ["andhra", "ఆంధ్ర", "ஆந்திர"],
   Telangana: ["telangana", "telengana", "తెలంగాణ", "தெலங்கானா", "தெலுங்கானா"],
   "Tamil Nadu": ["tamil nadu", "tamilnadu", "తమిళనాడు", "తమిళ నాడు", "தமிழ்நாடு", "தமிழகம்"],
-  Karnataka: ["karnataka", "కర్ణాటక", "கர்நாடக"],
-  Kerala: ["kerala", "కేరళ", "கேரள"],
-  Maharashtra: ["maharashtra", "మహారాష్ట్ర", "மகாராஷ்டிர"],
-  Odisha: ["odisha", "orissa", "ఒడిశా", "ఒడిషా", "ஒடிசா"],
-  Other: ["other", "ఇతర", "மற்ற"],
 };
 
 const FARMER_ALIASES: Record<string, string[]> = {
