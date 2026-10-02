@@ -82,9 +82,13 @@ function Index() {
     set("preferred_language", l);
   };
 
-  const voice = useVoiceFiller(lang, (key: FieldKey, value: string) =>
-    set(key, value as Form[typeof key]),
-  );
+  // Choosing a preferred language (by tap or by voice) switches the whole page and the voice assistant to it.
+  const setPreferred = (l: Lang) => changeLang(l);
+
+  const voice = useVoiceFiller(lang, (key: FieldKey, value: string) => {
+    if (key === "preferred_language") setPreferred(value as Lang);
+    else set(key, value as Form[typeof key]);
+  });
   const v = V[lang];
   const busy = voice.phase !== "idle";
 
@@ -305,7 +309,7 @@ function Index() {
                 {head("preferred_language", t.preferred_language)}
                 <select
                   value={form.preferred_language}
-                  onChange={(e) => set("preferred_language", e.target.value as Lang)}
+                  onChange={(e) => setPreferred(e.target.value as Lang)}
                   className={cls("preferred_language")}
                 >
                   {LANGUAGE_OPTIONS.map((o) => (
