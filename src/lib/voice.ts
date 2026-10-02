@@ -320,31 +320,35 @@ export function useVoiceFiller(
     });
 
   /** Ask one field. Resolves true when a value was captured. */
-  const runField = async (key: FieldKey, run: number, attempts: number): Promise<boolean> => {
+  const runField = async (
+    key: FieldKey,
+    run: number,
+    attempts: number,
+  ): Promise<"ok" | "skip" | "fatal"> => {
     for (let i = 0; i < attempts; i++) {
       const l = langRef.current;
       const v = V[l];
-      if (runRef.current !== run) return false;
+      if (runRef.current !== run) return "fatal";
       setActiveKey(key);
       setPhase("speaking");
       setMessage(v.ask[key]);
       await speak(v.ask[key], l);
-      if (runRef.current !== run) return false;
+      if (runRef.current !== run) return "fatal";
 
       setPhase("listening");
       setMessage(v.listening);
       const { alts, error } = await listen(l);
-      if (runRef.current !== run) return false;
+      if (runRef.current !== run) return "fatal";
 
       if (error === "not-allowed" || error === "service-not-allowed") {
         setPhase("error");
         setMessage(v.micDenied);
-        return false;
+        return "fatal";
       }
       if (error === "unsupported") {
         setPhase("error");
         setMessage(v.unsupported);
-        return false;
+        return "fatal";
       }
       const parsed = alts.length ? parseAnswer(key, alts, l) : null;
       if (parsed) {
@@ -352,13 +356,13 @@ export function useVoiceFiller(
         setPhase("heard");
         setMessage(`${v.heard}: ${parsed.display}`);
         await speak(`${v.heard}: ${parsed.display}`, l);
-        return runRef.current === run;
+        return runRef.current === run ? "ok" : "fatal";
       }
       setPhase("retry");
       setMessage(v.retry);
       await speak(v.retry, l);
     }
-    return false;
+    return "skip";
   };
 
   const askOne = async (key: FieldKey) => {
@@ -370,12 +374,10 @@ export function useVoiceFiller(
       setMessage(V[langRef.current].unsupported);
       return;
     }
-    const ok = await runField(key, run, 2);
+    const res = await runField(key, run, 2);
     if (runRef.current !== run) return;
     setActiveKey(null);
-    if (!ok) {
-      setPhase((p) => (p === "error" ? p : "idle"));
-    } else {
+    if (res !== "fatal") {
       setPhase("idle");
       setMessage("");
     }
@@ -390,19 +392,11 @@ export function useVoiceFiller(
       return;
     }
     for (const key of FIELD_ORDER) {
-      const ok = await runField(key, run, 2);
+      const res = await runField(key, run, 2);
       if (runRef.current !== run) return;
-      if (!ok) {
-        // Permission / support errors end the guided flow; otherwise skip the field.
-        let blocked = false;
-        setPhase((p) => {
-          blocked = p === "error";
-          return p;
-        });
-        if (blocked) {
-          setActiveKey(null);
-          return;
-        }
+      if (res === "fatal") {
+        setActiveKey(null);
+        return;
       }
     }
     const l = langRef.current;
