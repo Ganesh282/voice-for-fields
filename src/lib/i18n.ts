@@ -159,3 +159,105 @@ export const T: Record<
     back: "விவரங்களைத் திருத்து",
   },
 };
+
+export const V: Record<
+  Lang,
+  {
+    ask: Record<
+      | "name"
+      | "age"
+      | "state"
+      | "district"
+      | "preferred_language"
+      | "land_size"
+      | "farmer_type"
+      | "crop_type"
+      | "irrigation_type"
+      | "annual_income",
+      string
+    >;
+    guide: string;
+    guideHint: string;
+    stop: string;
+    speakField: string;
+    listening: string;
+    heard: string;
+    retry: string;
+    unsupported: string;
+    micDenied: string;
+    allDone: string;
+  }
+> = {
+  en: {
+    ask: {
+      name: "Please tell me your name.",
+      age: "How old are you?",
+      state: "Which state are you from? Andhra Pradesh, Telangana, Tamil Nadu, Karnataka, Kerala, Maharashtra or Odisha.",
+      district: "Tell me your district name.",
+      preferred_language: "Which language do you prefer? Telugu, English or Tamil.",
+      land_size: "How many acres of land do you have?",
+      farmer_type: "What type of farmer are you? Marginal, small, medium, large or tenant farmer.",
+      crop_type: "Which crop do you grow?",
+      irrigation_type: "How do you water your crop? Borewell, canal, drip or rain-fed.",
+      annual_income: "What is your yearly income in rupees?",
+    },
+    guide: "Fill the form by voice",
+    guideHint: "Mitra asks each question aloud. Just speak your answer.",
+    stop: "Stop",
+    speakField: "Speak your answer for",
+    listening: "Listening… please speak now",
+    heard: "Got it",
+    retry: "Sorry, I could not understand. Please try again.",
+    unsupported: "Voice input is not supported in this browser. Please open this page in Google Chrome.",
+    micDenied: "Microphone is blocked. Please allow microphone access and try again.",
+    allDone: "All details are filled. Please check them and press the start button.",
+  },
+  te: {
+    ask: {
+      name: "దయచేసి మీ పేరు చెప్పండి.",
+      age: "మీ వయస్సు ఎంత?",
+      state: "మీది ఏ రాష్ట్రం? ఆంధ్రప్రదేశ్, తెలంగాణ, తమిళనాడు, కర్ణాటక, కేరళ, మహారాష్ట్ర లేదా ఒడిశా.",
+      district: "మీ జిల్లా పేరు చెప్పండి.",
+      preferred_language: "మీకు ఇష్టమైన భాష ఏది? తెలుగు, ఇంగ్లీష్ లేదా తమిళం.",
+      land_size: "మీకు ఎన్ని ఎకరాల భూమి ఉంది?",
+      farmer_type: "మీరు ఏ రకం రైతు? సన్నకారు, చిన్న, మధ్యస్థ, పెద్ద లేదా కౌలు రైతు.",
+      crop_type: "మీరు ఏ పంట పండిస్తున్నారు?",
+      irrigation_type: "మీ పంటకు నీరు ఎలా అందుతుంది? బోరుబావి, కాలువ, డ్రిప్ లేదా వర్షాధారం.",
+      annual_income: "మీ సంవత్సర ఆదాయం ఎంత రూపాయలు?",
+    },
+    guide: "వాయిస్‌తో ఫారం నింపండి",
+    guideHint: "మిత్ర ప్రతి ప్రశ్నను గట్టిగా అడుగుతుంది. మీ జవాబు చెప్పండి చాలు.",
+    stop: "ఆపండి",
+    speakField: "మాట్లాడి చెప్పండి:",
+    listening: "వింటున్నాను… ఇప్పుడు మాట్లాడండి",
+    heard: "అర్థమైంది",
+    retry: "క్షమించండి, అర్థం కాలేదు. దయచేసి మళ్లీ చెప్పండి.",
+    unsupported: "ఈ బ్రౌజర్‌లో వాయిస్ ఇన్‌పుట్ పని చేయదు. దయచేసి Google Chrome లో తెరవండి.",
+    micDenied: "మైక్రోఫోన్ నిలిపివేయబడింది. దయచేసి అనుమతించి మళ్లీ ప్రయత్నించండి.",
+    allDone: "అన్ని వివరాలు నింపబడ్డాయి. దయచేసి సరిచూసి ప్రారంభ బటన్ నొక్కండి.",
+  },
+  ta: {
+    ask: {
+      name: "உங்கள் பெயரைச் சொல்லுங்கள்.",
+      age: "உங்கள் வயது என்ன?",
+      state: "உங்கள் மாநிலம் எது? ஆந்திரப் பிரதேசம், தெலங்கானா, தமிழ்நாடு, கர்நாடகா, கேரளா, மகாராஷ்டிரா அல்லது ஒடிசா.",
+      district: "உங்கள் மாவட்டத்தின் பெயரைச் சொல்லுங்கள்.",
+      preferred_language: "உங்களுக்கு விருப்பமான மொழி எது? தெலுங்கு, ஆங்கிலம் அல்லது தமிழ்.",
+      land_size: "உங்களிடம் எத்தனை ஏக்கர் நிலம் உள்ளது?",
+      farmer_type: "நீங்கள் எந்த வகை விவசாயி? குறு, சிறு, நடுத்தர, பெரிய அல்லது குத்தகை விவசாயி.",
+      crop_type: "நீங்கள் என்ன பயிர் செய்கிறீர்கள்?",
+      irrigation_type: "உங்கள் பயிருக்கு எப்படி தண்ணீர் பாய்ச்சுகிறீர்கள்? ஆழ்துளை கிணறு, கால்வாய், சொட்டு நீர் அல்லது மானாவாரி.",
+      annual_income: "உங்கள் ஆண்டு வருமானம் எத்தனை ரூபாய்?",
+    },
+    guide: "குரலால் படிவத்தை நிரப்புங்கள்",
+    guideHint: "மித்ரா ஒவ்வொரு கேள்வியையும் சத்தமாகக் கேட்கும். உங்கள் பதிலைச் சொல்லுங்கள்.",
+    stop: "நிறுத்து",
+    speakField: "பேசிப் பதிலளிக்க:",
+    listening: "கேட்கிறேன்… இப்போது பேசுங்கள்",
+    heard: "புரிந்தது",
+    retry: "மன்னிக்கவும், புரியவில்லை. மீண்டும் சொல்லுங்கள்.",
+    unsupported: "இந்த உலாவியில் குரல் உள்ளீடு இல்லை. Google Chrome-இல் திறக்கவும்.",
+    micDenied: "மைக்ரோஃபோன் தடுக்கப்பட்டுள்ளது. அனுமதித்து மீண்டும் முயற்சிக்கவும்.",
+    allDone: "அனைத்து விவரங்களும் நிரப்பப்பட்டன. சரிபார்த்து தொடங்கு பொத்தானை அழுத்தவும்.",
+  },
+};
