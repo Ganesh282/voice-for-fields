@@ -69,6 +69,8 @@ function Index() {
   const [error, setError] = useState(false);
   const [done, setDone] = useState(false);
   const t = T[lang];
+  // Letter-spacing breaks Telugu/Tamil glyph shaping, so only apply it to English.
+  const caps = lang === "en" ? "uppercase tracking-[0.15em]" : "";
 
   const set = <K extends keyof Form>(key: K, value: Form[K]) =>
     setForm((f) => ({ ...f, [key]: value }));
@@ -112,7 +114,7 @@ function Index() {
           </div>
           <div className="leading-tight">
             <p className="font-display text-lg font-semibold tracking-tight">KrishiMitra AI</p>
-            <p className="text-[11px] uppercase tracking-[0.2em] text-foreground/50">{t.subtitle}</p>
+            <p className={`text-[11px] text-foreground/50 ${caps}`}>{t.subtitle}</p>
           </div>
         </div>
         <div className="flex items-center gap-2 text-xs" role="group" aria-label="Language">
@@ -347,7 +349,7 @@ function Index() {
                   <Mic className="size-4" aria-hidden="true" />
                 </span>
               </div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-secondary">
+              <p className={`text-[11px] font-semibold text-secondary ${caps}`}>
                 {t.voiceLabel}
               </p>
             </div>
