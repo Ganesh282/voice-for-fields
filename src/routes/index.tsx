@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Mic, Sprout } from "lucide-react";
+import { Mic, Sprout, Square } from "lucide-react";
 import farmerCover from "@/assets/farmer-cover.jpg";
 import {
   FARMER_TYPES,
@@ -9,8 +9,10 @@ import {
   LANGUAGE_OPTIONS,
   STATES,
   T,
+  V,
   type Lang,
 } from "@/lib/i18n";
+import { useVoiceFiller, type FieldKey } from "@/lib/voice";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -79,6 +81,41 @@ function Index() {
     setLang(l);
     set("preferred_language", l);
   };
+
+  const voice = useVoiceFiller(lang, (key: FieldKey, value: string) =>
+    set(key, value as Form[typeof key]),
+  );
+  const v = V[lang];
+  const busy = voice.phase !== "idle";
+
+  const cls = (key: FieldKey) =>
+    voice.activeKey === key ? `${fieldClass} !border-primary ring-2 ring-primary/50` : fieldClass;
+
+  // Small round mic beside each label: tap it and speak the answer for that field.
+  const head = (key: FieldKey, label: string) => (
+    <span className="flex items-center justify-between gap-2">
+      <span className="text-xs text-foreground/60">{label}</span>
+      <button
+        type="button"
+        onClick={(e) => {
+          e.preventDefault();
+          voice.askOne(key);
+        }}
+        aria-label={`${v.speakField} ${label}`}
+        title={`${v.speakField} ${label}`}
+        className={`relative grid size-9 shrink-0 place-items-center rounded-full transition ${
+          voice.activeKey === key
+            ? "bg-primary text-primary-foreground"
+            : "bg-secondary/90 text-secondary-foreground hover:brightness-110"
+        }`}
+      >
+        {voice.activeKey === key && voice.phase === "listening" && (
+          <span className="animate-mic-ring absolute inset-0 rounded-full bg-primary/50" />
+        )}
+        <Mic className="relative size-4" aria-hidden="true" />
+      </button>
+    </span>
+  );
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -172,20 +209,57 @@ function Index() {
             </div>
           ) : (
             <form onSubmit={onSubmit} noValidate className="mt-8 grid max-w-xl grid-cols-2 gap-4">
+              <div className="col-span-2 rounded-xl border border-border bg-card p-4">
+                <div className="flex flex-wrap items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={voice.guideAll}
+                    className="inline-flex items-center gap-2 rounded-lg bg-secondary px-4 py-3 text-sm font-semibold text-secondary-foreground transition hover:brightness-110"
+                  >
+                    <Mic className="size-4" aria-hidden="true" />
+                    {v.guide}
+                  </button>
+                  {busy && (
+                    <button
+                      type="button"
+                      onClick={voice.stop}
+                      className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-3 text-sm text-foreground/80 transition hover:bg-foreground/10"
+                    >
+                      <Square className="size-3.5" aria-hidden="true" />
+                      {v.stop}
+                    </button>
+                  )}
+                </div>
+                <p className="mt-2 text-xs text-foreground/60">{v.guideHint}</p>
+                <p
+                  role="status"
+                  aria-live="polite"
+                  className={`mt-3 min-h-5 text-sm ${
+                    voice.phase === "error" || voice.phase === "retry"
+                      ? "text-destructive"
+                      : voice.phase === "heard" || voice.phase === "done"
+                        ? "text-primary"
+                        : "text-foreground/80"
+                  }`}
+                >
+                  {voice.message}
+                </p>
+              </div>
+
               <label className="col-span-2 block">
-                <span className="text-xs text-foreground/60">{t.name}</span>
+                {head("name", t.name)}
                 <input
                   type="text"
                   autoComplete="name"
                   value={form.name}
                   onChange={(e) => set("name", e.target.value)}
                   placeholder={t.ph_name}
-                  className={fieldClass}
+                  className={cls("name")}
                 />
               </label>
 
               <label className="block">
-                <span className="text-xs text-foreground/60">{t.age}</span>
+                {head("age", t.age)}
                 <input
                   type="number"
                   inputMode="numeric"
@@ -194,16 +268,16 @@ function Index() {
                   value={form.age}
                   onChange={(e) => set("age", e.target.value)}
                   placeholder="42"
-                  className={fieldClass}
+                  className={cls("age")}
                 />
               </label>
 
               <label className="block">
-                <span className="text-xs text-foreground/60">{t.state}</span>
+                {head("state", t.state)}
                 <select
                   value={form.state}
                   onChange={(e) => set("state", e.target.value)}
-                  className={fieldClass}
+                  className={cls("state")}
                 >
                   <option value="" className="bg-popover">
                     {t.select}
@@ -217,22 +291,22 @@ function Index() {
               </label>
 
               <label className="block">
-                <span className="text-xs text-foreground/60">{t.district}</span>
+                {head("district", t.district)}
                 <input
                   type="text"
                   value={form.district}
                   onChange={(e) => set("district", e.target.value)}
                   placeholder={t.ph_district}
-                  className={fieldClass}
+                  className={cls("district")}
                 />
               </label>
 
               <label className="block">
-                <span className="text-xs text-foreground/60">{t.preferred_language}</span>
+                {head("preferred_language", t.preferred_language)}
                 <select
                   value={form.preferred_language}
                   onChange={(e) => set("preferred_language", e.target.value as Lang)}
-                  className={fieldClass}
+                  className={cls("preferred_language")}
                 >
                   {LANGUAGE_OPTIONS.map((o) => (
                     <option key={o.value} value={o.value} className="bg-popover">
@@ -243,7 +317,7 @@ function Index() {
               </label>
 
               <label className="block">
-                <span className="text-xs text-foreground/60">{t.land_size}</span>
+                {head("land_size", t.land_size)}
                 <input
                   type="number"
                   inputMode="decimal"
@@ -252,16 +326,16 @@ function Index() {
                   value={form.land_size}
                   onChange={(e) => set("land_size", e.target.value)}
                   placeholder="3.5"
-                  className={fieldClass}
+                  className={cls("land_size")}
                 />
               </label>
 
               <label className="block">
-                <span className="text-xs text-foreground/60">{t.farmer_type}</span>
+                {head("farmer_type", t.farmer_type)}
                 <select
                   value={form.farmer_type}
                   onChange={(e) => set("farmer_type", e.target.value)}
-                  className={fieldClass}
+                  className={cls("farmer_type")}
                 >
                   <option value="" className="bg-popover">
                     {t.select}
@@ -275,22 +349,22 @@ function Index() {
               </label>
 
               <label className="block">
-                <span className="text-xs text-foreground/60">{t.crop_type}</span>
+                {head("crop_type", t.crop_type)}
                 <input
                   type="text"
                   value={form.crop_type}
                   onChange={(e) => set("crop_type", e.target.value)}
                   placeholder={t.ph_crop}
-                  className={fieldClass}
+                  className={cls("crop_type")}
                 />
               </label>
 
               <label className="block">
-                <span className="text-xs text-foreground/60">{t.irrigation_type}</span>
+                {head("irrigation_type", t.irrigation_type)}
                 <select
                   value={form.irrigation_type}
                   onChange={(e) => set("irrigation_type", e.target.value)}
-                  className={fieldClass}
+                  className={cls("irrigation_type")}
                 >
                   <option value="" className="bg-popover">
                     {t.select}
@@ -304,7 +378,7 @@ function Index() {
               </label>
 
               <label className="col-span-2 block">
-                <span className="text-xs text-foreground/60">{t.annual_income}</span>
+                {head("annual_income", t.annual_income)}
                 <input
                   type="number"
                   inputMode="numeric"
@@ -312,7 +386,7 @@ function Index() {
                   value={form.annual_income}
                   onChange={(e) => set("annual_income", e.target.value)}
                   placeholder="250000"
-                  className={fieldClass}
+                  className={cls("annual_income")}
                 />
               </label>
 
