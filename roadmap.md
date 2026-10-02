@@ -5,3 +5,4 @@
 - [x] Voice assistant chatbot motif; farmer cover photo
 - [x] Title/brand: "KrishiMitra AI"
 - [x] Design direction picked: Earthy Gradient
+- [x] Per-field voice input (mic on each field) + guided 'Fill the form by voice' (en/te/ta)
